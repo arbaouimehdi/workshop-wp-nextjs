@@ -1,7 +1,7 @@
 {
   "name": "create-next-example-app",
   "scripts": {
-    "dev": "next",
+    "dev": "NODE_ENV=development next",
     "build": "next build",
     "start": "next start"
   },
@@ -10,6 +10,7 @@
     "apollo-boost": "^0.4.7",
     "apollo-link-context": "^1.0.19",
     "apollo-link-http": "^1.5.16",
+    "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
     "next": "^9.2.1",
     "next-with-apollo": "^5.0.0",

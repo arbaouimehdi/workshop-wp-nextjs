@@ -1,7 +1,5 @@
-// pages/index.js
-import gql from "graphql-tag"
+import { gql } from "apollo-boost"
 import { useQuery } from "@apollo/react-hooks"
-import withApollo from "../lib/with-apollo"
 
 const QUERY = gql`
   query Posts {
@@ -32,4 +30,4 @@ const Index = () => {
   )
 }
 
-export default withApollo(Index)
+export default Index

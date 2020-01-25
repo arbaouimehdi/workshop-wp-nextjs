@@ -1,10 +1,11 @@
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
-})
+require("dotenv").config()
 
 module.exports = {
   env: {
-    WORDPRESS_API_URI: process.env.WORDPRESS_API_URI,
+    WORDPRESS_API_URI:
+      process.env.NODE_ENV == "development"
+        ? process.env.WORDPRESS_API_URI
+        : "https://nextjsapi.sinj.app/graphql",
   },
   webpack: config => {
     // Fixes npm packages that depend on `fs` module

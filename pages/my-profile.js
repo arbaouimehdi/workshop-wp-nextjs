@@ -36,7 +36,10 @@ const MyProfile = () => {
           <b>email: {userData.user.email}</b>
 
           <div>
-            <UpdateProfile userId={userData.user.id} />
+            <UpdateProfile
+              userId={userData.user.id}
+              setUserData={setUserData}
+            />
           </div>
         </div>
       ) : (

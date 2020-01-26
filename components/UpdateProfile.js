@@ -65,6 +65,9 @@ const UpdateProfile = ({ userId, setUserData }) => {
           user: data.updateUser.user,
         }
         localStorage.setItem(process.env.AUTH_TOKEN, JSON.stringify(newToken))
+
+        // Update the User Data to show on the View
+        setUserData(newToken)
       }}
       onError={error => console.log(error)}
     >
@@ -77,6 +80,7 @@ const UpdateProfile = ({ userId, setUserData }) => {
               onSubmit={e => {
                 e.preventDefault()
                 e.stopPropagation()
+
                 updateUser({
                   variables: {
                     clientMutationId,

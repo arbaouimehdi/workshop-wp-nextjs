@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import Router from "next/router"
 
 import { isUserValidated } from "../lib/auth-functions"
 import isEmpty from "../lib/helpers"

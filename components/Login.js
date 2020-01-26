@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { useMutation } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
+import Router from "next/router"
+
+import { isUserValidated } from "../lib/auth-functions"
+import isEmpty from "../lib/helpers"
 
 const AUTH_TOKEN = "hollymolly"
-const USERNAME = "username"
 
 /**
  * GraphQL mutation used for logging in
@@ -24,7 +27,11 @@ const LOGIN_MUTATION = gql`
     ) {
       authToken
       user {
-        nickname
+        id
+        userId
+        name
+        email
+        nicename
       }
     }
   }
@@ -33,18 +40,30 @@ const LOGIN_MUTATION = gql`
 const Login = () => {
   const [username, setUsername] = useState("mehdi")
   const [password, setPassword] = useState("mehdi")
+
   const clientMutationId =
     Math.random()
       .toString(36)
       .substring(2) + new Date().getTime().toString(36)
 
+  //
   const [login, { error, loading, data }] = useMutation(LOGIN_MUTATION, {
     onCompleted(data) {
-      const { authToken, user } = data.login
-      localStorage.setItem(AUTH_TOKEN, authToken)
-      localStorage.setItem(USERNAME, user.nickname)
+      // const { authToken, user } = data.login
+      localStorage.setItem(AUTH_TOKEN, JSON.stringify(data.login))
+      Router.push("/my-profile")
     },
   })
+
+  // Check if the user is validated already.
+  if (process.browser) {
+    const userValidated = isUserValidated()
+
+    // If user is already validated, redirect user to My Account page.
+    if (!isEmpty(userValidated)) {
+      Router.push("/my-profile")
+    }
+  }
 
   return (
     <div>

@@ -29,7 +29,9 @@ const MyProfile = () => {
       {showContent ? (
         <div>
           <h1>My Account</h1>
-          <i>Howdy {userData.user.nicename}!</i>
+          <i>
+            Howdy {userData.user.firstName} {userData.user.lastName}!
+          </i>
           <br />
           <b>email: {userData.user.email}</b>
 

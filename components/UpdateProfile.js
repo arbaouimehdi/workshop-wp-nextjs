@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useMutation } from "@apollo/react-hooks"
+import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import Router from "next/router"
 import { Mutation } from "react-apollo"
@@ -7,13 +7,21 @@ import { Mutation } from "react-apollo"
 import { isUserValidated } from "../lib/auth-functions"
 import isEmpty from "../lib/helpers"
 
+const CURRENT_USER = gql`
+  query CurrentUser($id: ID!) {
+    user(id: $id) {
+      firstName
+      lastName
+    }
+  }
+`
+
 const UPDATE_USER = gql`
   mutation UpdateUserMutation(
     $clientMutationId: String!
     $id: ID!
     $firstName: String!
     $lastName: String!
-    $password: String!
   ) {
     updateUser(
       input: {
@@ -21,7 +29,6 @@ const UPDATE_USER = gql`
         id: $id
         firstName: $firstName
         lastName: $lastName
-        password: $password
       }
     ) {
       user {
@@ -35,7 +42,6 @@ const UPDATE_USER = gql`
 const UpdateProfile = ({ userId }) => {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [password, setPassword] = useState("")
 
   const clientMutationId =
     Math.random()
@@ -43,8 +49,20 @@ const UpdateProfile = ({ userId }) => {
       .substring(2) + new Date().getTime().toString(36)
 
   return (
-    <Mutation mutation={UPDATE_USER} onError={error => console.log(error)}>
+    <Mutation
+      mutation={UPDATE_USER}
+      refetchQueries={[{ query: CURRENT_USER, variables: { id: "dXNlcjox" } }]}
+      onError={error => console.log(error)}
+    >
       {(updateUser, { error, loading, data }) => {
+        const {
+          error: errorCurrentUser,
+          loading: loadingCurrentUser,
+          data: currentUser,
+        } = useQuery(CURRENT_USER, {
+          variables: { id: "dXNlcjox" },
+        })
+
         return (
           <div>
             <h1>Update Infos</h1>
@@ -59,7 +77,6 @@ const UpdateProfile = ({ userId }) => {
                     id: userId,
                     firstName,
                     lastName,
-                    password,
                   },
                 })
               }}
@@ -76,12 +93,7 @@ const UpdateProfile = ({ userId }) => {
                 type="text"
                 placeholder="lastName"
               />
-              <input
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                type="password"
-                placeholder="Password"
-              />
+
               <input type="submit" value="Update User" />
             </form>
           </div>

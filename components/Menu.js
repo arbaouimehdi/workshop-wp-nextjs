@@ -9,6 +9,7 @@ const Menu = () => {
   const handleLogout = () => {
     if (process.browser) {
       logoutUser("/login")
+      setLoggedIn(false)
     }
   }
 
@@ -32,12 +33,6 @@ const Menu = () => {
       </li>
 
       <li>
-        <Link href="/login">
-          <a>Login</a>
-        </Link>
-      </li>
-
-      <li>
         <Link href="/my-profile">
           <a>My Profile</a>
         </Link>
@@ -50,7 +45,11 @@ const Menu = () => {
           </a>
         </li>
       ) : (
-        ""
+        <li>
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
+        </li>
       )}
     </ul>
   )

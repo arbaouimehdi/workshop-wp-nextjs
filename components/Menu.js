@@ -32,24 +32,32 @@ const Menu = () => {
         </Link>
       </li>
 
-      <li>
-        <Link href="/my-profile">
-          <a>My Profile</a>
-        </Link>
-      </li>
-
       {loggedIn ? (
-        <li>
-          <a href="#" onClick={handleLogout}>
-            Logout
-          </a>
-        </li>
+        <>
+          <li>
+            <Link href="/my-profile">
+              <a>My Profile</a>
+            </Link>
+          </li>
+          <li>
+            <a href="#" onClick={handleLogout}>
+              Logout
+            </a>
+          </li>
+        </>
       ) : (
-        <li>
-          <Link href="/login">
-            <a>Login</a>
-          </Link>
-        </li>
+        <>
+          <li>
+            <Link href="/login">
+              <a>Login</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/signup">
+              <a>Signup</a>
+            </Link>
+          </li>
+        </>
       )}
     </ul>
   )

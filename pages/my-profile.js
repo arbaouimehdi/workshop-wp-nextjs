@@ -3,6 +3,7 @@ import Router from "next/router"
 
 import { isUserValidated } from "../lib/auth-functions"
 import isEmpty from "../lib/helpers"
+import UpdateProfile from "../components/UpdateProfile"
 
 const MyProfile = () => {
   const [showContent, setShowContent] = useState(false)
@@ -31,6 +32,10 @@ const MyProfile = () => {
           <i>Howdy {userData.user.nicename}!</i>
           <br />
           <b>email: {userData.user.email}</b>
+
+          <div>
+            <UpdateProfile userId={userData.user.id} />
+          </div>
         </div>
       ) : (
         ""

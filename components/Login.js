@@ -30,6 +30,8 @@ const LOGIN_MUTATION = gql`
         name
         email
         nicename
+        firstName
+        lastName
       }
     }
   }

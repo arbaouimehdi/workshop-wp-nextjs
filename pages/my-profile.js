@@ -5,8 +5,9 @@ import { isUserValidated } from "../lib/auth-functions"
 import isEmpty from "../lib/helpers"
 import UpdateProfile from "../components/UpdateProfile"
 
+import isAuth from "../lib/is-auth"
+
 const MyProfile = () => {
-  const [showContent, setShowContent] = useState(false)
   const [userData, setUserData] = useState("")
 
   useEffect(() => {
@@ -14,19 +15,12 @@ const MyProfile = () => {
 
     if (!isEmpty(userValidatedData)) {
       setUserData(userValidatedData)
-      setShowContent(true)
-    }
-
-    //
-    else {
-      // If user is not logged in send the user back to login page.
-      Router.push("/login")
     }
   }, [])
 
   return (
     <div>
-      {showContent ? (
+      {userData ? (
         <div>
           <h1>My Account</h1>
           <i>
@@ -46,4 +40,4 @@ const MyProfile = () => {
   )
 }
 
-export default MyProfile
+export default isAuth(MyProfile)

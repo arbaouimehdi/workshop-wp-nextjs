@@ -32,6 +32,11 @@ const UPDATE_USER = gql`
       }
     ) {
       user {
+        id
+        userId
+        name
+        email
+        nicename
         firstName
         lastName
       }
@@ -39,9 +44,9 @@ const UPDATE_USER = gql`
   }
 `
 
-const UpdateProfile = ({ userId }) => {
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+const UpdateProfile = ({ userId, setUserData }) => {
+  const [firstName, setFirstName] = useState("x")
+  const [lastName, setLastName] = useState("x")
 
   const clientMutationId =
     Math.random()
@@ -51,18 +56,19 @@ const UpdateProfile = ({ userId }) => {
   return (
     <Mutation
       mutation={UPDATE_USER}
-      refetchQueries={[{ query: CURRENT_USER, variables: { id: "dXNlcjox" } }]}
+      refetchQueries={[{ query: CURRENT_USER, variables: { id: userId } }]}
+      onCompleted={data => {
+        // Updated the token with the new user infos
+        const token = JSON.parse(localStorage.getItem(process.env.AUTH_TOKEN))
+        const newToken = {
+          authToken: token.authToken,
+          user: data.updateUser.user,
+        }
+        localStorage.setItem(process.env.AUTH_TOKEN, JSON.stringify(newToken))
+      }}
       onError={error => console.log(error)}
     >
       {(updateUser, { error, loading, data }) => {
-        const {
-          error: errorCurrentUser,
-          loading: loadingCurrentUser,
-          data: currentUser,
-        } = useQuery(CURRENT_USER, {
-          variables: { id: "dXNlcjox" },
-        })
-
         return (
           <div>
             <h1>Update Infos</h1>
@@ -94,7 +100,7 @@ const UpdateProfile = ({ userId }) => {
                 placeholder="lastName"
               />
 
-              <input type="submit" value="Update User" />
+              <button>{loading ? "Loading" : "Update"}</button>
             </form>
           </div>
         )

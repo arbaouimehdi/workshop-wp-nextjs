@@ -44,9 +44,9 @@ const UPDATE_USER = gql`
   }
 `
 
-const UpdateProfile = ({ userId, setUserData }) => {
-  const [firstName, setFirstName] = useState("x")
-  const [lastName, setLastName] = useState("x")
+const UpdateProfile = ({ userData, setUserData }) => {
+  const [firstName, setFirstName] = useState(userData.user.firstName)
+  const [lastName, setLastName] = useState(userData.user.lastName)
 
   const clientMutationId =
     Math.random()
@@ -56,7 +56,9 @@ const UpdateProfile = ({ userId, setUserData }) => {
   return (
     <Mutation
       mutation={UPDATE_USER}
-      refetchQueries={[{ query: CURRENT_USER, variables: { id: userId } }]}
+      refetchQueries={[
+        { query: CURRENT_USER, variables: { id: userData.user.id } },
+      ]}
       onCompleted={data => {
         // Updated the token with the new user infos
         const token = JSON.parse(localStorage.getItem(process.env.AUTH_TOKEN))
@@ -84,7 +86,7 @@ const UpdateProfile = ({ userId, setUserData }) => {
                 updateUser({
                   variables: {
                     clientMutationId,
-                    id: userId,
+                    id: userData.user.id,
                     firstName,
                     lastName,
                   },

@@ -1,11 +1,6 @@
 import { useState } from "react"
-import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
-import Router from "next/router"
 import { Mutation } from "react-apollo"
-
-import { isUserValidated } from "../lib/auth-functions"
-import isEmpty from "../lib/helpers"
 
 const CURRENT_USER = gql`
   query CurrentUser($id: ID!) {

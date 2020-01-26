@@ -37,6 +37,12 @@ const Menu = () => {
         </Link>
       </li>
 
+      <li>
+        <Link href="/my-profile">
+          <a>My Profile</a>
+        </Link>
+      </li>
+
       {loggedIn ? (
         <li>
           <a href="#" onClick={handleLogout}>

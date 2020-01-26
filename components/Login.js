@@ -6,8 +6,6 @@ import Router from "next/router"
 import { isUserValidated } from "../lib/auth-functions"
 import isEmpty from "../lib/helpers"
 
-const AUTH_TOKEN = "hollymolly"
-
 /**
  * GraphQL mutation used for logging in
  * Returns an authToken and nickname
@@ -50,7 +48,7 @@ const Login = () => {
   const [login, { error, loading, data }] = useMutation(LOGIN_MUTATION, {
     onCompleted(data) {
       // const { authToken, user } = data.login
-      localStorage.setItem(AUTH_TOKEN, JSON.stringify(data.login))
+      localStorage.setItem(process.env.AUTH_TOKEN, JSON.stringify(data.login))
       Router.push("/my-profile")
     },
   })
